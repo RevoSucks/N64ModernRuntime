@@ -1,4 +1,7 @@
+#include <stdio.h>
+
 #include "ultramodern/ultra64.h"
+#include "../../../include/tlb.h"
 
 #define K0BASE        0x80000000
 #define K1BASE        0xA0000000
@@ -15,8 +18,7 @@ u32 osVirtualToPhysical(PTR(void) addr) {
     } else if (IS_KSEG1(addr_val)) {
         return K1_TO_PHYS(addr_val);
     } else {
-        // TODO handle TLB mappings
-        return (u32)addr_val;
+        return _tlb_lookup_raw(addr_val);
     }
 }
 
