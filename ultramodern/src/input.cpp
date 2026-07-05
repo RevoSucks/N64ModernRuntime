@@ -173,7 +173,8 @@ extern "C" void osContGetReadData(OSContPad *data) {
             got_response = input_callbacks.get_input(controller, &buttons, &x, &y);
         }
 
-        if (got_response) {
+        // HACK, force 1 controller at all times
+        if (controller == 0 && got_response) {
             convert_to_n64_range(x, y, data[controller].stick_x, data[controller].stick_y);
 
             data[controller].button = buttons;
