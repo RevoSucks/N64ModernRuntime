@@ -425,6 +425,7 @@ recomp::mods::DynamicLibraryCodeHandle::DynamicLibraryCodeHandle(const std::file
         *base_event_index = inputs.base_event_index;
         *recomp_trigger_event = inputs.recomp_trigger_event;
         *get_function = inputs.get_function;
+        *tlb_lookup = inputs.tlb_lookup;
         *cop0_status_write = inputs.cop0_status_write;
         *cop0_status_read = inputs.cop0_status_read;
         *switch_error = inputs.switch_error;
@@ -492,6 +493,7 @@ recomp::mods::LiveRecompilerCodeHandle::LiveRecompilerCodeHandle(
         .switch_error = inputs.switch_error,
         .do_break = inputs.do_break,
         .get_function = inputs.get_function,
+        .tlb_lookup = inputs.tlb_lookup,
         .syscall_handler = nullptr, // TODO hook this up
         .pause_self = pause_self,
         .trigger_event = inputs.recomp_trigger_event,
@@ -1391,9 +1393,10 @@ N64Recomp::Context context_from_regenerated_list(const RegeneratedList& regenlis
             function_out.function_hooks.clear();
 
             // Copy the function's words.
+
             const uint32_t* func_words = reinterpret_cast<const uint32_t*>(rom.data() + function_out.rom);
             function_out.words.assign(func_words, func_words + function_in.size / sizeof(uint32_t));
-            
+
             // Add the function to the lookup table.
             ret.functions_by_vram[function_out.vram].push_back(function_index);
         }
@@ -2032,6 +2035,7 @@ std::unique_ptr<recomp::mods::LiveRecompilerCodeHandle> apply_regenlist(Regenera
         .base_event_index = 0, // No events in vanilla functions, so this doesn't matter.
         .recomp_trigger_event = recomp_trigger_event,
         .get_function = get_function,
+        .tlb_lookup = tlb_lookup,
         .cop0_status_write = cop0_status_write,
         .cop0_status_read = cop0_status_read,
         .switch_error = switch_error,
@@ -2360,6 +2364,7 @@ recomp::mods::CodeModLoadError recomp::mods::ModContext::load_mod_code(uint8_t* 
         .base_event_index = base_event_index,
         .recomp_trigger_event = recomp_trigger_event,
         .get_function = get_function,
+        .tlb_lookup = tlb_lookup,
         .cop0_status_write = cop0_status_write,
         .cop0_status_read = cop0_status_read,
         .switch_error = switch_error,

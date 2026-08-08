@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 #include "ultramodern/ultra64.h"
-#include "../../../include/tlb.h"
+
+#include "../../librecomp/include/librecomp/tlb.h"
 
 #define K0BASE        0x80000000
 #define K1BASE        0xA0000000

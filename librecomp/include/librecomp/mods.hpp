@@ -532,6 +532,7 @@ namespace recomp {
             uint32_t base_event_index;
             void (*recomp_trigger_event)(uint8_t* rdram, recomp_context* ctx, uint32_t index);
             recomp_func_t* (*get_function)(int32_t vram);
+            recomp_func_t* (*tlb_lookup)(int64_t vram);
             void (*cop0_status_write)(recomp_context* ctx, gpr value);
             gpr (*cop0_status_read)(recomp_context* ctx);
             void (*switch_error)(const char* func, uint32_t vram, uint32_t jtbl);
@@ -566,6 +567,7 @@ namespace recomp {
             uint32_t* base_event_index;
             void (**recomp_trigger_event)(uint8_t* rdram, recomp_context* ctx, uint32_t index);
             recomp_func_t* (**get_function)(int32_t vram);
+            recomp_func_t* (**tlb_lookup)(int64_t vram);
             void (**cop0_status_write)(recomp_context* ctx, gpr value);
             gpr (**cop0_status_read)(recomp_context* ctx);
             void (**switch_error)(const char* func, uint32_t vram, uint32_t jtbl);
